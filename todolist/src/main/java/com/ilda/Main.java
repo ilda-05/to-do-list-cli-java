@@ -35,8 +35,9 @@ public class Main {
                 if(task_list.isEmpty())
                     System.out.println("There's no task");
                 else{
+                    int i = 1;
                     for(String task : task_list){
-                        System.out.println(task);
+                        System.out.println(i++ + " " + task);
                     }
                 }
 
