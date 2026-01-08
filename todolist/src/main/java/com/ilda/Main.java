@@ -30,6 +30,7 @@ public class Main {
             case "0":
                 
                 on_going=false;
+                scanner.close();
                 break;
 
             case "1":
