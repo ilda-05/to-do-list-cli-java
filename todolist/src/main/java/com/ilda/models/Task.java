@@ -6,6 +6,8 @@ public class Task {
     private String description;
     private boolean checked;
 
+
+
     public Task(String name, String description){
 
         this.name=name;
@@ -14,23 +16,21 @@ public class Task {
 
     }
 
-    public String getTaskName(){
+    // GETTERS
 
-        return this.name;
-
+    public String getName() {
+        return name;
     }
 
-    public String getTaskDescription(){
-
-        return this.description;
-
+    public String getDescription() {
+        return description;
     }
 
-    public boolean getTaskChecked(){
-
-        return this.checked;
-
+    public boolean isChecked() {
+        return checked;
     }
+
+    // SETTERS
 
     public void setName(String name) {
         this.name = name;

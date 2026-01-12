@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.ilda.models.Task;
+
 public class Main {
     public static void main(String[] args) {
     
-        List<String> task_list = new ArrayList<String>();;
+        List<Task> task_list = new ArrayList<Task>();;
 
         Scanner scanner = new Scanner(System.in);
 
@@ -39,8 +41,9 @@ public class Main {
                     System.out.println("There's no task\n");
                 else{
                     int i = 1;
-                    for(String task : task_list){
-                        System.out.println(i++ + " " + task);
+                    for(Task task : task_list){
+                        System.out.println(i++ + " " + task.getName());
+                        System.out.println("Description : " + task.getDescription());
                     }
                 }
 
@@ -48,14 +51,20 @@ public class Main {
 
             case "2":
 
+                String task_name;
+                String task_description;
+
+                System.out.print("Task's Name : ");
+
+                task_name = scanner.nextLine();
 
                 System.out.print("Task's Description : ");
+                
+                task_description = scanner.nextLine();
 
-                task_list.add(scanner.nextLine());
+                task_list.add(new Task(task_name,task_description));
                 
                 System.out.println("Task Created\n");
-
-
 
                 break;
 
@@ -67,8 +76,8 @@ public class Main {
                 }
                 else{
                     int i = 1;
-                    for(String task : task_list){
-                        System.out.println(i++ + " " + task);
+                    for(Task task : task_list){
+                        System.out.println(i++ + " " + task.getName());
                     }
                 }
 
