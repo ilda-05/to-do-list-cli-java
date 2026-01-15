@@ -2,6 +2,7 @@ package com.ilda.models;
 
 public class Task {
 
+    private Long id;
     private String name;
     private String description;
     private boolean checked;
@@ -17,6 +18,10 @@ public class Task {
     }
 
     // GETTERS
+
+    public Task() {
+        //TODO Auto-generated constructor stub
+    }
 
     public String getName() {
         return name;
@@ -42,6 +47,19 @@ public class Task {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Task [id=" + id + ", name=" + name + ", description=" + description + ", checked=" + checked + "]";
     }
 
     

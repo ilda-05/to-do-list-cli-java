@@ -5,16 +5,18 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.ilda.models.Task;
+import com.ilda.repository.TaskRepo;
+import com.ilda.services.TaskServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
-    
-        List<Task> task_list = new ArrayList<Task>();;
+
+        TaskRepo taskRepo = new TaskRepo();
+        TaskServiceImpl taskServiceImpl = new TaskServiceImpl(taskRepo);
 
         Scanner scanner = new Scanner(System.in);
 
         boolean on_going = true;
-
 
         while(on_going){
 
@@ -24,7 +26,7 @@ public class Main {
         System.out.println("1 View All The Tasks");
         System.out.println("2 Add Task");
         System.out.println("3 Delete Task");
-        System.out.println("4 Mark A Task As Completed");
+        System.out.println("4 Mark/Unmark A Task As Completed");
 
         System.out.print("\nUser >> ");
         String user_opt = scanner.nextLine();
@@ -38,18 +40,14 @@ public class Main {
 
             case "1":
 
-                if(task_list.isEmpty())
-                    System.out.println("There's no task\n");
-                else{
-                    int i = 1;
-                    for(Task task : task_list){
-                        System.out.print(i++ + " " + task.getName());
-                        if(!task.isChecked())
-                            System.out.println(" [ ]");
-                        else
-                            System.out.println(" [X]");
-                        System.out.println("Description : " + task.getDescription());
-                    }
+                if(taskServiceImpl.getAllTasks().isEmpty()){
+                    System.out.println("There's no task");
+                    break;
+                }
+
+
+                for (Task task : taskServiceImpl.getAllTasks()) {
+                    System.out.println(task);
                 }
 
                 break;
@@ -67,7 +65,9 @@ public class Main {
                 
                 task_description = scanner.nextLine();
 
-                task_list.add(new Task(task_name,task_description));
+                Task new_Task = new Task(task_name, task_description);
+
+                taskServiceImpl.createTask(new_Task);
                 
                 System.out.println("Task Created\n");
 
@@ -75,56 +75,73 @@ public class Main {
 
             case "3":
 
-                if(task_list.isEmpty()){
-                    System.out.println("There's no task to delete\n");
+                if(taskServiceImpl.getAllTasks().isEmpty()){
+                    System.out.println("There's no task");
                     break;
                 }
-                else{
-                    int i = 1;
-                    for(Task task : task_list){
-                        System.out.println(i++ + " " + task.getName());
-                    }
+
+                for (Task task : taskServiceImpl.getAllTasks()) {
+                    System.out.println(task);
                 }
 
                 System.out.print("What task do you want to delete? : ");
                 
-                try {
-                    int task_to_remove=Integer.parseInt(scanner.nextLine())-1;
-                    task_list.remove(task_to_remove);
-                    System.out.println("Task Deleted\n");
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Invalid Input\n");
-                    break;
-                }
+                    try{
+                        int task_to_remove=Integer.parseInt(scanner.nextLine());
+
+                        if(taskServiceImpl.findById(task_to_remove)==null){
+                            System.out.println("There's no task with that id");
+                            break;
+                        }
+
+                        try{
+                        taskServiceImpl.deleteTask(task_to_remove);
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
+
+                        System.out.println("Task Deleted\n");
+                        break;
+                    }
+                    catch(IllegalArgumentException err){
+                        System.out.println("Invalid Input");
+                        break;
+                    }
 
             case "4":
 
-                if(task_list.isEmpty()){
-                    System.out.println("There's no task to mark\n");
+                if(taskServiceImpl.getAllTasks().isEmpty()){
+                    System.out.println("There's no task");
                     break;
-                }
-                else{
-                    int i = 1;
-                    for(Task task : task_list){
-                        System.out.println(i++ + " " + task.getName());
-                    }
                 }
 
-                System.out.print("What task do you want to mark as completed? : ");
+
+                for (Task task : taskServiceImpl.getAllTasks()) {
+                    System.out.println(task);
+                }
+
+                System.out.print("What task do you want to mark/unmark as completed? : ");
                 
                 try {
-                    int task_to_mark=Integer.parseInt(scanner.nextLine())-1;
-                    task_list.get(task_to_mark).setChecked(true);
+                    int task_to_mark=Integer.parseInt(scanner.nextLine());
+
+                    if(taskServiceImpl.findById(task_to_mark)==null){
+                        System.out.println("There's no task with that id");
+                        break;
+                    }
+
+                    taskServiceImpl.markTask(task_to_mark);
                     break;
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid Input");
                     break;
                 }
 
             default:
                 
                 System.out.println("Choose an valid option");
+                break;
+
         }
 
         }
