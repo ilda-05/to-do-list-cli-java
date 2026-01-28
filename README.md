@@ -6,3 +6,5 @@
 - Mark as completed a task
 - View all the tasks
 - Update task
+
+## || Tasks aren't persistent ||
